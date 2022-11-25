@@ -5,11 +5,23 @@ const ContactsIcon: React.FC<{
   color: string
 }> = props => {
   return (
-    <Svg width={24} height={24} {...props}>
+    <Svg width={28} height={28} {...props}>
       <Path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M1.5 10.537V10.5C1.5 4.705 6.205 0 12 0c5.794 0 10.5 4.705 10.5 10.5v.037c-.024 7.847-7.575 12.53-9.961 13.364-.16.055-.35.099-.539.099-.189 0-.37-.036-.539-.099-2.386-.834-9.937-5.517-9.961-13.364zM12 6c2.484 0 4.5 2.016 4.5 4.5S14.484 15 12 15a4.502 4.502 0 01-4.5-4.5C7.5 8.016 9.516 6 12 6z"
+        d="M17.5098 7.25783L11.9902 4.09125V20.7426L17.5098 23.9091V7.25783Z"
+        fill={props.color}
+      />
+      <Path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M19.3098 23.9465L26.75 19.678V3.44441C26.75 3.25773 26.552 3.14028 26.392 3.23206L19.3098 7.29517V23.9465Z"
+        fill={props.color}
+      />
+      <Path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M2.75 8.32241L10.1902 4.05391V20.7052L3.108 24.7683C2.94801 24.8601 2.75 24.7427 2.75 24.556V8.32241Z"
         fill={props.color}
       />
     </Svg>

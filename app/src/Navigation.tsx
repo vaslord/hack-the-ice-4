@@ -78,7 +78,7 @@ const ProfileStackScreen = () => (
 )
 
 const TabsScreen = () => {
-  const token = null
+  let token: any = 'ssadsad'
   return (
     <Tabs.Navigator
       screenOptions={({route, navigation}) => ({
@@ -88,52 +88,20 @@ const TabsScreen = () => {
         },
         tabBarLabelPosition: 'below-icon',
         headerShown: false,
-        tabBarActiveTintColor: '#018050',
+        tabBarActiveTintColor: '#185AC5',
         tabBarIcon: ({focused}) => {
-          let iconColor = '#BDBDBD'
-          if (route.name === 'Меню') {
-            iconColor = focused ? colors.darkGreen : colors.secondaryGray
+          let iconColor = '#185AC5'
+          if (route.name === 'Карта') {
+            iconColor = focused ? colors.blue : colors.secondaryGray
             return <ContactsIcon color={iconColor} />
-          } else if (route.name === 'Отзывы') {
-            iconColor = focused ? colors.darkGreen : colors.secondaryGray
-            return <EmptyIcon color={iconColor} />
-          } else if (route.name === 'Контакты') {
-            iconColor = focused ? colors.darkGreen : colors.secondaryGray
-            return <EmptyIcon color={iconColor} />
           } else if (route.name === 'Профиль') {
-            iconColor = focused ? colors.darkGreen : colors.secondaryGray
+            iconColor = focused ? colors.blue : colors.secondaryGray
             return <ProfileIcon color={iconColor} />
           }
         },
       })}>
-      <Tabs.Screen name={'Меню'} component={MenuStackScreen} />
-      <Tabs.Screen
-        name={'Отзывы'}
-        component={Orders}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'left',
-          headerTitleStyle: {
-            fontSize: 32,
-            fontWeight: '700',
-          },
-          title: 'Отзывы',
-          headerShadowVisible: false,
-        }}
-      />
-      <Tabs.Screen
-        name={'Контакты'}
-        component={Contacts}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'left',
-          headerTitleStyle: {
-            fontSize: 32,
-            fontWeight: '700',
-          },
-          headerShadowVisible: false,
-        }}
-      />
+      <Tabs.Screen name={'Карта'} component={MenuStackScreen} />
+
       <Tabs.Screen
         name={'Профиль'}
         component={ProfileStackScreen}

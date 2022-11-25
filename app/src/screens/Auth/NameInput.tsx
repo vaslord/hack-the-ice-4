@@ -30,7 +30,7 @@ export const NameInput: React.FC<{navigation: any}> = ({navigation}) => {
             onChangeText={text => {
               setNameJS(text)
             }}
-            selectionColor={colors.darkGreen}
+            selectionColor={colors.blue}
             placeholder={'Как вас зовут?'}
             style={{
               backgroundColor: colors.gray,
@@ -51,7 +51,9 @@ export const NameInput: React.FC<{navigation: any}> = ({navigation}) => {
           containerStyle={{marginBottom: 24}}
           title={'Зарегистрироваться'}
           disabled={nameJS.length === 0}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate('ProfileScreen')
+          }}
         />
       </SafeAreaView>
     </KeyboardAvoidingView>

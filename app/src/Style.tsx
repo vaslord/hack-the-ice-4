@@ -12,6 +12,8 @@ export const colors = {
   lines: '#EAEAEA',
   background: '#F2F2F7',
   red: '#EB5757',
+  blue: '#185AC5',
+  secondaryBlue: '#4CA1EC',
 }
 
 export const Style = StyleSheet.create({
@@ -43,7 +45,7 @@ export const Style = StyleSheet.create({
     paddingTop: 60,
   },
   button: {
-    backgroundColor: colors.darkGreen,
+    backgroundColor: colors.blue,
     borderRadius: 16,
     height: 56,
     marginLeft: 16,

@@ -54,7 +54,7 @@ export const PhoneInput: React.FC<{navigation: any}> = ({navigation}) => {
               setPhoneNumber(formatted)
             }}
             style={customStyles.input}
-            selectionColor={colors.darkGreen}
+            selectionColor={colors.blue}
             underlineColorAndroid={'transparent'}
             keyboardType={'phone-pad'}
             mask={'+7 ([999])-[999]-[99]-[99]'}
@@ -67,7 +67,7 @@ export const PhoneInput: React.FC<{navigation: any}> = ({navigation}) => {
           }}>
           <Text
             style={{
-              color: colors.darkGreen,
+              color: colors.blue,
               marginBottom: 24,
               textAlign: 'center',
               fontSize: 15,
