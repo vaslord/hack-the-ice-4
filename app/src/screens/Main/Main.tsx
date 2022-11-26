@@ -2,8 +2,10 @@ import React, {useEffect, useRef, useState} from 'react'
 import {Text, Image, TouchableOpacity} from 'react-native'
 import {colors, Style} from '../../Style'
 import MapView from 'react-native-map-clustering'
-import {Marker, Polyline} from 'react-native-maps'
+import {Marker, Polyline, Geojson} from 'react-native-maps'
 import {Button} from 'react-native-elements'
+import {GetData} from '../../requests/Get'
+import {API_URL} from '../../api/constants'
 
 const items: any = [
   {id: 1, lat: 62.0209, lon: 129.711, orders: 5},
@@ -11,9 +13,32 @@ const items: any = [
   {id: 3, lat: 62.035454, lon: 129.675476, orders: 5},
   {id: 3, lat: 62.0335, lon: 129.7512, orders: 5},
 ]
+const badRegion: any = [
+  {latitude: 62.0323, longitude: 129.7512},
+  {latitude: 62.03429, longitude: 129.7523},
+  {latitude: 62.03569, longitude: 129.7514},
+  {latitude: 62.03359, longitude: 129.747},
+  {latitude: 62.03059, longitude: 129.7502},
+  {latitude: 62.0323, longitude: 129.7512},
+]
 
 export const Main = ({navigation, route}: any) => {
+  const [data, setData] = useState([])
+  const [geodata, setGeoData] = useState([])
   const mapRef = useRef()
+  React.useEffect(() => {
+    GetData(
+      API_URL + `reports`,
+      null,
+      (json: any) => {
+        setData(json)
+        console.log(data)
+      },
+      (e: any) => {
+        console.log('\nОтзывы', e)
+      },
+    )
+  }, [])
   return (
     <>
       <MapView
@@ -40,13 +65,16 @@ export const Main = ({navigation, route}: any) => {
           )
           navigation.navigate('Items', {items: clickedItems})
         }}>
-        {items.map((item: any) => (
+        {data.map((item: any) => (
           <Marker
             identifier={item.id + ''}
             image={require('../../assets/icons/marker2.png')}
             key={item.id + ''}
             onPress={() => {}}
-            coordinate={{latitude: item.lat, longitude: item.lon}}>
+            coordinate={{
+              latitude: item.geo_data.latitude,
+              longitude: item.geo_data.longitude,
+            }}>
             <Text
               numberOfLines={1}
               style={{
@@ -62,18 +90,11 @@ export const Main = ({navigation, route}: any) => {
           </Marker>
         ))}
         <Polyline
-          coordinates={[
-            {latitude: 62.0323, longitude: 129.7512},
-            {latitude: 62.03429, longitude: 129.7523},
-            {latitude: 62.03569, longitude: 129.7514},
-            {latitude: 62.03359, longitude: 129.747},
-            {latitude: 62.03059, longitude: 129.7502},
-            {latitude: 62.0323, longitude: 129.7512},
-          ]}
-          strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+          coordinates={badRegion}
+          strokeColor="#000"
           strokeColors={[
             '#7F0000',
-            '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+            '#00000000',
             '#B24112',
             '#E5845C',
             '#238C23',
@@ -82,24 +103,6 @@ export const Main = ({navigation, route}: any) => {
           strokeWidth={6}
         />
       </MapView>
-      <Button
-        buttonStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 25,
-          backgroundColor: colors.blue,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        titleStyle={{...Style.buttonTitle}}
-        containerStyle={{
-          position: 'absolute',
-          bottom: 16,
-          right: 16,
-        }}
-        iconPosition="left"
-        title={'+'}
-      />
     </>
   )
 }

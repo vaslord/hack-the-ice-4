@@ -1,15 +1,34 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {View, SafeAreaView, Text, ScrollView, Image} from 'react-native'
+import {
+  View,
+  SafeAreaView,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native'
 import Alarm from '../../components/SVGcomponents/Alarm'
+import {useAppDispatch, useAppSelector} from '../../api/hooks'
 import InfoIcon from '../../components/SVGcomponents/InfoIcon'
 import Settings from '../../components/SVGcomponents/Settings'
 import {colors, Style} from '../../Style'
+import {logout, updateMe} from '../../features/user-slice'
 
 export function Profile({navigation}: {navigation: any}) {
+  const user = useAppSelector(state => state.user.user)
+  const userStatus = useAppSelector(state => state.user.status)
+  const dispatch = useAppDispatch()
+  const [nameModalVisible, setNameModalVisible] = useState(false)
+
+  const logOut = () => {
+    navigation.goBack()
+    navigation.navigate('Home')
+    dispatch(logout())
+  }
   return (
     <SafeAreaView style={[Style.container]}>
       <ScrollView style={{backgroundColor: colors.white}}>
-        <View
+        <TouchableOpacity
           style={{
             marginTop: 20,
             marginHorizontal: 8,
@@ -41,8 +60,8 @@ export function Profile({navigation}: {navigation: any}) {
               Иван Иванович
             </Text>
           </View>
-        </View>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{
             marginTop: 20,
             marginHorizontal: 8,
@@ -65,8 +84,8 @@ export function Profile({navigation}: {navigation: any}) {
             }}>
             Уведомления
           </Text>
-        </View>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{
             marginTop: 20,
             marginHorizontal: 8,
@@ -89,8 +108,8 @@ export function Profile({navigation}: {navigation: any}) {
             }}>
             Настройка аккаунта
           </Text>
-        </View>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{
             marginTop: 20,
             marginHorizontal: 8,
@@ -113,8 +132,32 @@ export function Profile({navigation}: {navigation: any}) {
             }}>
             Помощь и поддержка
           </Text>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
+      <TouchableOpacity
+        style={{
+          marginBottom: 20,
+          marginHorizontal: 8,
+          height: 64,
+          alignSelf: 'stretch',
+          backgroundColor: 'white',
+          shadowOpacity: 0.32,
+          borderRadius: 12,
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 20,
+        }}
+        onPress={logOut}>
+        <Text
+          style={{
+            fontWeight: '100',
+            fontSize: 18,
+            fontStyle: 'italic',
+            marginLeft: 20,
+          }}>
+          Выйти с профиля
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   )
 }

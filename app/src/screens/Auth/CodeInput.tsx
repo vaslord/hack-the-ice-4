@@ -8,10 +8,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  Alert,
 } from 'react-native'
 import {useHeaderHeight} from '@react-navigation/elements'
 import {colors, Style} from '../../Style'
 import {Button} from 'react-native-elements'
+import {useAppSelector, useAppDispatch} from '../../api/hooks'
+import {instance} from '../../api/api'
+import {login} from '../../features/user-slice'
 
 const customStyles = StyleSheet.create({
   hiddenCodeInput: {
@@ -64,6 +68,66 @@ const CodeInput: React.FC<{navigation: any; route: any}> = ({
   const canSend = diff > 30
   const {phoneNumber} = route.params
   const [code, setCode] = useState('')
+  const dispatch = useAppDispatch()
+  const userStatus = useAppSelector(state => state.user.status)
+  const user = useAppSelector(state => state.user.user)
+  console.log('USER:', user)
+
+  const sendCode = useCallback(async () => {
+    const res = await instance.post(
+      '/auth/register',
+      {
+        phone: phoneNumber,
+      },
+      {validateStatus: () => true},
+    )
+    const json = res.data as any
+    if (json.error) {
+      Alert.alert('Ошибка', json.error.message)
+    }
+  }, [phoneNumber])
+  const sendCodeforLogin = useCallback(async () => {
+    const res = await instance.post(
+      '/auth/send-code',
+      {
+        phone: phoneNumber,
+      },
+      {validateStatus: () => true},
+    )
+    const json = res.data as any
+    if (json.error) {
+      Alert.alert('Ошибка', json.error.message)
+    }
+  }, [phoneNumber])
+
+  useEffect(() => {
+    sendCode()
+  }, [sendCode])
+
+  useEffect(() => {
+    if (userStatus === 'succeeded' && user) {
+      if (!user.name) {
+        navigation.navigate('NameInput')
+      } else {
+        navigation.navigate('Tabs')
+      }
+    }
+  }, [user, userStatus, navigation])
+
+  useEffect(() => {
+    const send = async () => {
+      if (code.length === 4) {
+        setCode('')
+        await dispatch(
+          login({
+            phone: phoneNumber,
+            code: code,
+          }),
+        )
+      }
+    }
+    send()
+  }, [phoneNumber, code, dispatch, seconds])
 
   const codeDigitsArray = new Array(CODE_LENGTH).fill(0)
   const [containerIsFocused, setContainerIsFocused] = useState(false)
@@ -138,8 +202,8 @@ const CodeInput: React.FC<{navigation: any; route: any}> = ({
           buttonStyle={Style.button}
           titleStyle={Style.buttonTitle}
           containerStyle={{marginBottom: 24}}
-          title={'Отправить снова 30 секунд'}
-          onPress={() => navigation.navigate('NameInput')}
+          title={'Отправить код для входа'}
+          onPress={() => sendCodeforLogin}
         />
       </SafeAreaView>
     </KeyboardAvoidingView>

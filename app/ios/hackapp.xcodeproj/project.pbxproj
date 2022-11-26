@@ -145,7 +145,6 @@
 				1503C6EE2B0801C7ACB85CAE /* Pods-hackapp-hackappTests.debug.xcconfig */,
 				15619044BB274957AFF08878 /* Pods-hackapp-hackappTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -485,6 +484,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 92D336K3CT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = hackapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -511,6 +511,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 92D336K3CT;
 				INFOPLIST_FILE = hackapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

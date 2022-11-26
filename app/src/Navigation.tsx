@@ -20,6 +20,9 @@ import {NameInput} from './screens/Auth/NameInput'
 import {Orders} from './screens/Orders/Order'
 import {Contacts} from './screens/Contacts/Contacts'
 import EmptyIcon from './components/SVGcomponents/EmptyIcon'
+import {API_URL} from './api/constants'
+import {checkLogin} from './features/user-slice'
+import Plus from './components/SVGcomponents/Plus'
 
 const createStack =
   Platform.OS === 'ios' ? createStackNavigator : createNativeStackNavigator
@@ -27,6 +30,7 @@ const Tabs = createBottomTabNavigator()
 const MenuStack = createStack()
 const ProfileStack = createStack()
 const RootStack = createStack()
+const OrderStack = createStack()
 const MenuStackScreen = () => (
   <MenuStack.Navigator screenOptions={{headerShown: false}}>
     <MenuStack.Screen name="Home" component={Main} />
@@ -78,7 +82,8 @@ const ProfileStackScreen = () => (
 )
 
 const TabsScreen = () => {
-  let token: any = 'ssadsad'
+  const token = useAppSelector(state => state.user.token)
+  const dispatch = useAppDispatch()
   return (
     <Tabs.Navigator
       screenOptions={({route, navigation}) => ({
@@ -88,6 +93,7 @@ const TabsScreen = () => {
         },
         tabBarLabelPosition: 'below-icon',
         headerShown: false,
+        tabBarStyle: {backgroundColor: colors.gray},
         tabBarActiveTintColor: '#185AC5',
         tabBarIcon: ({focused}) => {
           let iconColor = '#185AC5'
@@ -101,7 +107,27 @@ const TabsScreen = () => {
         },
       })}>
       <Tabs.Screen name={'Карта'} component={MenuStackScreen} />
-
+      <Tabs.Screen
+        name={'+'}
+        component={OrdersStackScreen}
+        options={({navigation}) => ({
+          tabBarButton: props => (
+            <TouchableOpacity
+              {...props}
+              style={{
+                width: 57,
+                height: 57,
+                backgroundColor: colors.blue,
+                borderRadius: 57,
+                bottom: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Plus />
+            </TouchableOpacity>
+          ),
+        })}
+      />
       <Tabs.Screen
         name={'Профиль'}
         component={ProfileStackScreen}
@@ -115,6 +141,35 @@ const TabsScreen = () => {
         })}
       />
     </Tabs.Navigator>
+  )
+}
+const OrdersStackScreen = () => {
+  return (
+    <OrderStack.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTitleStyle: {
+          fontSize: 32,
+          fontWeight: '700',
+        },
+        headerShadowVisible: false,
+        headerTintColor: 'black',
+      }}>
+      <OrderStack.Screen
+        options={{
+          title: 'Отзывы',
+          headerTitleAlign: 'left',
+          headerShown: true,
+          headerTitleStyle: {
+            fontSize: 32,
+            fontWeight: '700',
+          },
+          headerShadowVisible: false,
+        }}
+        name="Orders"
+        component={Orders}
+      />
+    </OrderStack.Navigator>
   )
 }
 
@@ -192,9 +247,15 @@ const RootStackScreen = () => {
 }
 
 export function Navigation() {
+  const dispatch = useAppDispatch()
   useEffect(() => {
     SplashScreen.hide()
   }, [])
+  const token = useAppSelector(state => state.user.token)
+  useEffect(() => {
+    dispatch(checkLogin())
+  }, [dispatch])
+
   return (
     <NavigationContainer>
       <StatusBar barStyle={'dark-content'} />
